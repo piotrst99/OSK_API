@@ -69,10 +69,13 @@ namespace OSK_API.Controllers
             List<StudentCourseData> studentCourseDatas = new List<StudentCourseData>();
             
             var studentCourses = context.studentCourses.Where(q => q.StudentID == u.userID).ToList();
+            
 
             foreach (var sCourse in studentCourses) {
                 var course = context.courses.Where(q => q.ID == sCourse.CourseID).FirstOrDefault();
                 var category = context.categories.Where(q => q.ID == course.CategoryID).FirstOrDefault();
+                var countOfCompletedPractical = context.practicals.Where(q => q.StudentID == u.userID && q.Category == category.Symbol &&
+                    q.PracticalStatID == 2).Count();
 
                 StudentCourseData studentCourse = new StudentCourseData() {
                     ID = sCourse.ID,
@@ -82,7 +85,9 @@ namespace OSK_API.Controllers
                     ExtraHours = sCourse.ExtraHours,
                     SumOfPayments = sCourse.SumOfPayment,
                     StudentCourseStatus = sCourse.StudentStatus,
-                    Category = category.Symbol
+                    Category = category.Symbol,
+                    CountOfPractical = course.AmountPractical,
+                    CountOfCompletedPractical = countOfCompletedPractical * 2
                 };
 
                 studentCourseDatas.Add(studentCourse);
@@ -95,6 +100,34 @@ namespace OSK_API.Controllers
             
 
             return studentCourseDatas;
+        }
+
+        [HttpPost]
+        [Route("GetStudentPayments")]
+        public List<StudentPayment> GetStudentPayments(UserName u) {
+            var studentPayments = new List<StudentPayment>();
+
+            var payments = context.payments.Where(q => q.StudentID == u.userID).ToList();
+
+            foreach (var p in payments) {
+                var employee = context.users.Where(q => q.ID == p.EmployeeID).FirstOrDefault();
+                var typePayment = context.typePayments.Where(q => q.ID == p.TypePaymentID).FirstOrDefault();
+
+                StudentPayment studentPayment = new StudentPayment() {
+                    ID = p.ID,
+                    Cost = p.Cost,
+                    PaymentDate = p.PaymentDate,
+                    PaymentTime = p.PaymentTime,
+                    Employee = employee.FirstName + " " + employee.Surname,
+                    TypePayment = typePayment.Name
+                };
+
+                studentPayments.Add(studentPayment);
+
+            }
+
+            return studentPayments;
+
         }
 
     }

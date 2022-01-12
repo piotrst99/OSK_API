@@ -24,9 +24,7 @@ namespace OSK_API.Controllers
         //public IActionResult CheckLoginData(string login, string password, int val) {
         public IActionResult CheckLoginData(LoginData l) {
 
-            bool b = false;
-
-            List<bool> bo = new List<bool>();
+            //bool b = false;
             //string l = login;
             //if(val == 1) {
             if(l.val == 1) {

@@ -25,5 +25,6 @@ namespace OSK_API.DbContexts
         public DbSet<User> users { get; set; }
         public DbSet<Vehicle> vehicles { get; set; }
         public DbSet<VehicleStatus> vehicleStatuses { get; set; }
+        public DbSet<TypePayment> typePayments { get; set; }
     }
 }

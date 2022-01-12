@@ -11,7 +11,7 @@ namespace OSK_App.Entities
     {
         [Key]
         public int ID { get; set; }
-        public decimal Cost { get; set; }
+        public int Cost { get; set; }
         public string PaymentDate { get; set; }
         public string PaymentTime { get; set; }
         public string ReceiptDate { get; set; }
@@ -24,9 +24,13 @@ namespace OSK_App.Entities
 
         [ForeignKey("PaymentStatus")]
         public int PaymentStatID { get; set; }
-        
+
+        [ForeignKey("TypePayments")]
+        public int TypePaymentID { get; set; }
+
         public virtual Student Student { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual PaymentStatus PaymentStatus { get; set; }
+        public virtual TypePayment TypePayment { get; set; }
     }
 }
