@@ -3,6 +3,7 @@ using OSK_API.DbContexts;
 using OSK_API.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -56,6 +57,25 @@ namespace OSK_API.Controllers
             };
 
             return userData;
+        }
+
+
+        [HttpPost]
+        [Route("GetEmoloyeeActivites")]
+        public EmployeeActiviteData GetEmoloyeeActivites(EmployeeActiviteData activiteData) {
+            var listOfPractical = context.practicals.Where(q => q.EmployeeID == activiteData.UserID).ToList().Where(q =>
+                (DateTime.ParseExact(activiteData.BeginDate, "yyyy-MM-dd", CultureInfo.InvariantCulture) <=
+                DateTime.ParseExact(q.Data, "yyyy-MM-dd", CultureInfo.InvariantCulture)) &&
+                        (DateTime.ParseExact(activiteData.EndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture) >=
+                        DateTime.ParseExact(q.Data, "yyyy-MM-dd", CultureInfo.InvariantCulture))).ToList();
+
+            EmployeeActiviteData data = new EmployeeActiviteData() {
+                CountOfPlaned = listOfPractical.Where(q => q.PracticalStatID == 1).Count(),
+                CountOfDone = listOfPractical.Where(q => q.PracticalStatID == 3).Count(),
+                CountOfCancel = listOfPractical.Where(q => q.PracticalStatID == 3).Count()
+            };
+            
+            return data;
         }
     }
 }
