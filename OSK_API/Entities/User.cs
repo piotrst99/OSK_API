@@ -35,6 +35,8 @@ namespace OSK_App.Entities
         
         [Display(Name = "Data urodzenia")]
         public string DateOfBirth { get; set; }
+
+        public string HashPassword { get; set; }
         
         [ForeignKey("Address")]
         public int AddressID { get; set; }

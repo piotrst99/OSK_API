@@ -22,7 +22,7 @@ namespace OSK_API.Controllers
         public IActionResult CheckLoginData(LoginData l) {
 
             if(l.val == 1) {
-                var student = context.students.Where(q => q.User.UserName == l.login && q.User.Password == l.password).FirstOrDefault();
+                var student = context.students.Where(q => q.User.UserName == l.login && q.User.HashPassword == l.password).FirstOrDefault();
 
                 if (student != null) {
                     return Json(new { result = true });
@@ -32,7 +32,7 @@ namespace OSK_API.Controllers
                 }
             }
             else{
-                var employee = context.employees.Where(q => q.User.UserName == l.login && q.User.Password == l.password && q.Role.ID == 2).FirstOrDefault();
+                var employee = context.employees.Where(q => q.User.UserName == l.login && q.User.HashPassword == l.password && q.Role.ID == 2).FirstOrDefault();
                 
                 if (employee != null) {
                     return Json(new { result = true });
